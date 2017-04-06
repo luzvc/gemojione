@@ -17,6 +17,12 @@ describe Gemojione do
         assert_equal 'http://localhost:3000/1F44D.svg', Gemojione.image_url_for_name('+1')
       end
     end
+
+    it 'should generate url' do
+      with_emoji_config(:downcase_emoji_unicode, true) do
+        assert_equal 'http://localhost:3000/1f44d.png', Gemojione.image_url_for_name('+1')
+      end
+    end
   end
 
   describe "image_url_for_unicode_moji" do

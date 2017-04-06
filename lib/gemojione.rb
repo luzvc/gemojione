@@ -18,6 +18,7 @@ module Gemojione
   @default_size = nil
   @use_svg = false
   @use_sprite = false
+  @downcase_emoji_unicode = false
 
   @escaper = defined?(EscapeUtils) ? EscapeUtils : CGI
 
@@ -61,9 +62,19 @@ module Gemojione
     @use_sprite = useit
   end
 
+  def self.downcase_emoji_unicode=(value)
+    @downcase_emoji_unicode = value
+  end
+
+  def self.downcase_emoji_unicode
+    @downcase_emoji_unicode
+  end
+
   def self.image_url_for_name(name)
     emoji = index.find_by_name(name)
-    "#{asset_host}#{ File.join(asset_path, emoji['unicode']) }.#{ use_svg ? 'svg' : 'png' }"
+    unicode = emoji['unicode']
+    unicode.downcase! if downcase_emoji_unicode
+    "#{asset_host}#{ File.join(asset_path, unicode) }.#{ use_svg ? 'svg' : 'png' }"
   end
 
   def self.image_url_for_unicode_moji(moji)
